@@ -26,9 +26,24 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-5">
-                <div class="mb-3">
-                    <label for="urlGeneral" class="form-label">Url</label>
-                    <input type="text" class="form-control imageGenerator" id="urlGeneral" placeholder="URL">
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <div class="mb-3">
+                            <label for="urlGeneral" class="form-label">Url</label>
+                            <input type="text" class="form-control imageGenerator" id="urlGeneral" placeholder="URL">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-select" id="type">
+                                <option value=".png" selected>png</option>
+                                <option value=".jpg">jpg</option>
+                                <option value=".gif">gif</option>
+                                <option value=".svg">svg</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="alt" class="form-label">ALT</label>
@@ -40,7 +55,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="sizes" class="form-label">Sizes</label>
-                    <select type="text" class="form-control" id="sizes" multiple style="height: 150px;">
+                    <select class="form-control" id="sizes" multiple style="height: 150px;">
                         <option value="480">480</option>
                         <option value="768">768</option>
                         <option value="960">960</option>
@@ -110,12 +125,13 @@
             imgCssGenerate();
             const img = $("#image");
             let url = $("#urlGeneral").val();
+            let type = $("#type").val();
             let alt = $("#alt").val();
             let title = $("#title").val();
             let sizes = $("#sizes").val();
             if (url != "") {
-                img.attr("src", url + "768-lazy-load.png");
-                img.attr("data-src", url + "768.png");
+                img.attr("src", url + "768-lazy-load" + type);
+                img.attr("data-src", url + "768" + type);
                 img.attr("sizes", "(max-width: 768px) 100vw, (max-width: 1100px) and (min-width: 769px) 50vw, 600px");
                 img.attr("alt", alt);
                 img.attr("title", title);
@@ -123,7 +139,7 @@
                 img.attr("data-srcset", "");
                 $('#sizes :selected').each(function (i, sel) {
                     let datasrcset = img.attr("data-srcset");
-                    let urlComplete = url + $(sel).val() + ".png " + $(sel).val() + "w";
+                    let urlComplete = url + $(sel).val() + type + " " + $(sel).val() + "w";
                     let plus = datasrcset + urlComplete;
                     console.log(i + " - " + $(sel).val() + " - " + $('#sizes :selected').length);
                     img.attr("data-srcset", plus);
@@ -137,7 +153,7 @@
             var $bridge = $("<input>")
             $("body").append($bridge);
             let values = $(element).html();
-            values=values.replace(/\ id="image"/g, '')
+            values = values.replace(/\ id="image"/g, '')
             $bridge.val(values).select();
             document.execCommand("copy");
             $bridge.remove();
